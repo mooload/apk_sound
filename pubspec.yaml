@@ -30,10 +30,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound: ^9.7.0
+
+  fftea: ^1.5.0+1
   path_provider: ^2.1.4
   path: ^1.9.0
+  json_annotation: ^4.8.0
   cupertino_icons: ^1.0.6
+  permission_handler: ^11.3.1
+  flutter_sound: ^9.2.13
 
 dev_dependencies:
   flutter_test:
@@ -44,7 +48,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

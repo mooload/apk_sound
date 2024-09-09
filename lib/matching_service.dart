@@ -1,29 +1,20 @@
-import 'package:tes_2_tolong/audio_service.dart';
-import 'dart:convert';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-
+import 'audio_service.dart';
 
 class MatchingService {
   Future<bool> testVoice(AudioService audioService) async {
-    // Simulate the feature extraction of the test voice
+    // Extract features from the new recording
     final testFeatures = await audioService.extractFeatures(audioService.recordedFilePath);
 
     // Load the saved features
-    Directory appDirectory = await getApplicationDocumentsDirectory();
-    File featureFile = File('${appDirectory.path}/features.json');
+    final savedFeatures = await audioService.loadFeatures();
 
-    if (!await featureFile.exists()) {
-      return false;
+    if (savedFeatures.isEmpty) {
+      return false; // No features saved previously
     }
 
-    final savedFeatures = jsonDecode(await featureFile.readAsString());
-
-    // Dummy matching logic
-    // In practice, you will compare extracted features such as pitch and amplitude
+    // Implement actual matching logic here
+    // For demonstration, we check if the pitch and amplitude are equal
     return (testFeatures["pitch"] == savedFeatures["pitch"]) &&
         (testFeatures["amplitude"] == savedFeatures["amplitude"]);
   }
-
 }
