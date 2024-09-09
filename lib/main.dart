@@ -80,7 +80,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Audio Matching App"),
+        title: const Text("Tolong Matching App",
+        style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),),
+        backgroundColor: Colors.red,
       ),
       body: Center(
         child: Column(

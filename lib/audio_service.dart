@@ -3,21 +3,22 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:fftea/fftea.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+// import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_record/flutter_sound_record.dart';
 
 class AudioService {
-  // final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  final FlutterSoundRecord _recorder = FlutterSoundRecord();
   String recordedFilePath = "";
 
   Future<void> startRecording() async {
     Directory appDirectory = await getApplicationDocumentsDirectory();
     recordedFilePath = '${appDirectory.path}/audio_sample.wav';
-    // await _recorder.openRecorder();
-    // await _recorder.startRecorder(toFile: recordedFilePath);
+    await _recorder.start();
+    await _recorder.start(path: recordedFilePath );
   }
 
   Future<void> stopRecordingAndSaveFeatures() async {
-    // await _recorder.stopRecorder();
+    await _recorder.stop();
     // Extract features and save them
     final features = await extractFeatures(recordedFilePath);
     await saveFeatures(features);
@@ -34,7 +35,7 @@ class AudioService {
 
     // Convert Uint8List to Float32List for FFT (Assuming 16-bit PCM WAV format)
     List<double> audioSamples = pcmData.buffer.asInt16List().map((e) => e.toDouble()).toList();
-
+    // List<double> audioSamples = AMR_WB.map((e) => e.x).toList();
     // Perform FFT using fftea package
     final fft = FFT(audioSamples.length);
     final freq = fft.realFft(audioSamples);
