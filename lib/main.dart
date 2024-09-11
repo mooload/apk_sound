@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'audio_service.dart';
 import 'matching_service.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -75,6 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
           : "Sorry, not recognize you.";
     });
   }
+  Future<void> _lookValue() async {
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text("Tolong Matching App",
         style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.deepPurpleAccent,
       ),
       body: Center(
         child: Column(
@@ -98,11 +102,25 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: _recordSample,
               child: const Text("Record Sample"),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _testMatching,
               child: const Text("Test Voice Matching"),
             ),
+            const SizedBox(height: 80),
+            ElevatedButton(
+                onPressed: ()async{
+                  final content = await _audioService.loadFeatures();
+                  print(content);
+                  // print(getApplicationCacheDirectory());
+                },
+                child: const Text("Look Sample Value"),
+            ),
+            // const SizedBox(height: 10),
+            // ElevatedButton(
+            //   onPressed: _testMatching,
+            //   child: const Text("Look Test Value"),
+            // ),
           ],
         ),
       ),

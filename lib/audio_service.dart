@@ -13,7 +13,7 @@ class AudioService {
   Future<void> startRecording() async {
     Directory appDirectory = await getApplicationDocumentsDirectory();
     recordedFilePath = '${appDirectory.path}/audio_sample.wav';
-    await _recorder.start();
+    await _recorder.isRecording();
     await _recorder.start(path: recordedFilePath );
   }
 
@@ -34,15 +34,16 @@ class AudioService {
     Uint8List pcmData = wavData.sublist(44); // raw audio data starts after the 44-byte header
 
     // Convert Uint8List to Float32List for FFT (Assuming 16-bit PCM WAV format)
-    List<double> audioSamples = pcmData.buffer.asInt16List().map((e) => e.toDouble()).toList();
-    // List<double> audioSamples = AMR_WB.map((e) => e.x).toList();
+    List<double> audioSample = pcmData.buffer.asInt16List().map((e) => e.toDouble()).toList();
+    // List<double> audioSample = AMR_WB.map((e) => e.x).toList();
     // Perform FFT using fftea package
-    final fft = FFT(audioSamples.length);
-    final freq = fft.realFft(audioSamples);
+    final fft = FFT(audioSample.length);
+    final freq = fft.realFft(audioSample);
 
+    List<double> converted = freq.map((e) => e.x).toList();
     // Example: extract amplitude and pitch from the FFT results
-    double amplitude = calculateAmplitude(freq as List<double>);
-    double pitch = calculatePitch(freq as List<double>);
+    double amplitude = calculateAmplitude(converted);
+    double pitch = calculatePitch(converted);
 
     return {
       'pitch': pitch,
@@ -52,6 +53,7 @@ class AudioService {
 
   Future<void> saveFeatures(Map<String, dynamic> features) async {
     Directory appDirectory = await getApplicationDocumentsDirectory();
+    print(appDirectory.path);
     File featureFile = File('${appDirectory.path}/features.json');
     await featureFile.writeAsString(jsonEncode(features));
   }
